@@ -3,17 +3,10 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	v1 "hazzikostas-api/routes/api/v1"
 	"log"
 )
 
-package main
-
-import (
-"github.com/gin-gonic/gin"
-"github.com/joho/godotenv"
-v1 "ion-api/routes/api/v1"
-"log"
-)
 type Message struct {
 	Message string `json:"message"`
 }

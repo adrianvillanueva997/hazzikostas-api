@@ -2,7 +2,7 @@ package v1
 
 import (
 	"fmt"
-	"ion-api/src/db"
+	"hazzikostas-api/src/db"
 )
 
 type Character struct {
