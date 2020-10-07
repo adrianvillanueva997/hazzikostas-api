@@ -1,8 +1,8 @@
 package v1
 
 import (
-	"fmt"
 	"hazzikostas-api/src/db"
+	"log"
 )
 
 type Character struct {
@@ -33,21 +33,27 @@ type Character struct {
 	RankFactionDif float32 `json:"rank_faction_dif"`
 }
 
-func GetCharacters() ([]Character, error) {
+func GetCharacters() (*[]Character, error) {
 	cursor, err := db.SetConnection()
 	var characters []Character
 	if err != nil {
-		return characters, err
+		log.Println(err)
+		return nil, err
 	}
-	println("patata")
-	defer cursor.Close()
+	defer func() {
+		err = cursor.Close()
+		if err != nil {
+			log.Println(err)
+		}
+	}()
 	results, err := cursor.Query("SELECT db.Toon_Name, db.region, db.realm, db._all, db.dps," +
 		"db.healer, db.tank, db.spec_0, db.spec_1, db.spec_2, db.spec_3, db.rank_overall," +
 		"db.rank_class, db.rank_faction, db._all_diff, db.dps_diff, db.healer_diff," +
 		"db.tank_diff, db.spec_0_diff, db.spec_1_diff, db.spec_2_diff, db.spec_3_diff," +
 		"db.rank_class_diff, db.rank_faction_diff FROM HK_Toons_1 db")
 	if err != nil {
-		return characters, err
+		log.Println(err)
+		return nil, err
 	}
 	for results.Next() {
 		var tmp Character
@@ -56,12 +62,10 @@ func GetCharacters() ([]Character, error) {
 			&tmp.RankFaction, &tmp.AllDif, &tmp.DpsDif, &tmp.HealerDif, &tmp.TankDif, &tmp.Spec0Dif, &tmp.Spec1Dif,
 			&tmp.Spec2Dif, &tmp.Spec3Dif, &tmp.RankClassDif, &tmp.RankFactionDif)
 		if err != nil {
-			var characterErr []Character
-			return characterErr, nil
+			log.Println(err)
+			return nil, nil
 		}
-		fmt.Println(characters)
 		characters = append(characters, tmp)
 	}
-	return characters, nil
-
+	return &characters, nil
 }
