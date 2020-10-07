@@ -43,6 +43,9 @@ func main() {
 	if err != nil {
 		log.Println(err)
 	}
+	cron1.StartAsync()
+	cron2.StartAsync()
+	cron3.StartAsync()
 	router := gin.Default()
 	router.GET("/api/v1/characters", func(context *gin.Context) {
 		characters, err := v1.GetCharacters()
