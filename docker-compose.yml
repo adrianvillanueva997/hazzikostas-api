@@ -1,0 +1,22 @@
+version: "3.0"
+services:
+  api:
+    image: hazzikostas_api
+    networks:
+      - proxy
+    container_name: hazzikostas_api
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.auth-api-redirect-websecure.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.auth-api-redirect-websecure.redirectscheme.permanent=true"
+      - "traefik.http.routers.auth-api-web.middlewares=auth-api-redirect-websecure"
+      - traefik.http.routers.auth-api-web.rule=Host(`hazzikostas.thexiao77.xyz`)
+      - traefik.http.routers.auth-api-web.entrypoints=web
+      - traefik.http.routers.auth-api-websecure.rule=Host(`hazzikostas.thexiao77.xyz`)
+      - traefik.http.routers.auth-api-websecure.tls.certresolver=le
+      - traefik.http.routers.auth-api-websecure.tls=true
+      - traefik.http.routers.auth-api-websecure.entrypoints=web-secured
+      - "traefik.docker.network=proxy"
+networks:
+  proxy:
+    external: true
