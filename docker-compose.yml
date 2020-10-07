@@ -7,15 +7,15 @@ services:
     container_name: hazzikostas_api
     labels:
       - "traefik.enable=true"
-      - "traefik.http.middlewares.auth-api-redirect-websecure.redirectscheme.scheme=https"
-      - "traefik.http.middlewares.auth-api-redirect-websecure.redirectscheme.permanent=true"
-      - "traefik.http.routers.auth-api-web.middlewares=auth-api-redirect-websecure"
-      - traefik.http.routers.auth-api-web.rule=Host(`hazzikostas.thexiao77.xyz`)
-      - traefik.http.routers.auth-api-web.entrypoints=web
-      - traefik.http.routers.auth-api-websecure.rule=Host(`hazzikostas.thexiao77.xyz`)
-      - traefik.http.routers.auth-api-websecure.tls.certresolver=le
-      - traefik.http.routers.auth-api-websecure.tls=true
-      - traefik.http.routers.auth-api-websecure.entrypoints=web-secured
+      - "traefik.http.middlewares.hazzikostas-api-redirect-websecure.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.hazzikostas-api-redirect-websecure.redirectscheme.permanent=true"
+      - "traefik.http.routers.hazzikostas-api-web.middlewares=hazzikostas-api-redirect-websecure"
+      - traefik.http.routers.hazzikostas-api-web.rule=Host(`hazzikostas.thexiao77.xyz`)
+      - traefik.http.routers.hazzikostas-api-web.entrypoints=web
+      - traefik.http.routers.hazzikostas-api-websecure.rule=Host(`hazzikostas.thexiao77.xyz`)
+      - traefik.http.routers.hazzikostas-api-websecure.tls.certresolver=le
+      - traefik.http.routers.hazzikostas-api-websecure.tls=true
+      - traefik.http.routers.hazzikostas-api-websecure.entrypoints=web-secured
       - "traefik.docker.network=proxy"
 networks:
   proxy:
