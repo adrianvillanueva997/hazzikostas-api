@@ -2,6 +2,11 @@ version: "3.0"
 services:
   api:
     image: hazzikostas_api
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+    environment:
+      - TZ=Europe/Madrid
     networks:
       - proxy
     container_name: hazzikostas_api
