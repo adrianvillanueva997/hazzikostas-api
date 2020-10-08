@@ -155,10 +155,7 @@ func Routine(characters []v1.Character) {
 			raiderInfo.MythicPlusScoresBySeason[0].Scores.Spec0 != characters[i].Spec0 ||
 			raiderInfo.MythicPlusScoresBySeason[0].Scores.Spec1 != characters[i].Spec1 ||
 			raiderInfo.MythicPlusScoresBySeason[0].Scores.Spec2 != characters[i].Spec2 ||
-			raiderInfo.MythicPlusScoresBySeason[0].Scores.Spec3 != characters[i].Spec3 ||
-			raiderInfo.MythicPlusRanks.Overall.Realm != characters[i].RankOverall ||
-			raiderInfo.MythicPlusRanks.Class.Realm != characters[i].RankClass ||
-			raiderInfo.MythicPlusRanks.FactionOverall.Realm != characters[i].RankFaction {
+			raiderInfo.MythicPlusScoresBySeason[0].Scores.Spec3 != characters[i].Spec3{
 			log.Println("Updating: " + characters[i].ToonName)
 			err = updateCharacter(characters[i], raiderInfo)
 			if err != nil {
