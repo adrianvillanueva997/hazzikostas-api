@@ -20,14 +20,10 @@ func ExecuteRoutine() {
 	routine.Routine(*characters)
 }
 
-func main() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatalln(err)
-	}
+func loadCronRoutines() {
 	cron1 := gocron.NewScheduler(time.UTC)
 	cron1.Every(1).Day().At("18:00")
-	_, err = cron1.Do(ExecuteRoutine)
+	_, err := cron1.Do(ExecuteRoutine)
 	if err != nil {
 		log.Println(err)
 	}
@@ -46,9 +42,25 @@ func main() {
 	cron1.StartAsync()
 	cron2.StartAsync()
 	cron3.StartAsync()
+	log.Println("Cron routines started successfully")
+}
+
+func main() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatalln(err)
+	}
+	loadCronRoutines()
 	router := gin.Default()
 	router.GET("/api/v1/characters", func(context *gin.Context) {
 		characters, err := v1.GetCharacters()
+		if err != nil {
+			log.Println(err)
+		}
+		context.JSON(200, characters)
+	})
+	router.GET("/api/v1/postcharacters", func(context *gin.Context) {
+		characters, err := v1.GetCharactersToPost()
 		if err != nil {
 			log.Println(err)
 		}
