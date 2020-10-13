@@ -1,18 +1,25 @@
 # Multistage builder image
 # Builder -> executable
+
 # Builder stage
-FROM golang:1.13-alpine as build-env
-RUN apk add --no-cache gcc libc-dev
-
+# Go build
+FROM golang:1.13-alpine as build-go
+RUN apk update && apk add --no-cache gcc libc-dev
 WORKDIR /build
-
 COPY go.mod .
 COPY go.sum .
-
 RUN go mod download
 COPY . .
 RUN go build -o main .
-# Executable stage
+
+# Javascript build
+FROM node:14.13.1-alpine3.12 as build-js
+RUN apk --no-cache update && apk add make g++ && rm -rf
+WORKDIR /build_js
+COPY client .
+RUN npm install && npm run build
+
+# Production stage
 FROM alpine:latest
 WORKDIR /app
 ENV GO111MODULE=on \
@@ -20,7 +27,8 @@ ENV GO111MODULE=on \
     GOOS=linux \
     GOARCH=amd64 \
     GIN_MODE=release
-COPY --from=build-env /build/main .
-COPY --from=build-env /build/.env .
-EXPOSE 3000
+COPY --from=build-go /build/main .
+COPY --from=build-js /build_js/build ./client/build
+COPY .env .
+EXPOSE 5000
 ENTRYPOINT ./main

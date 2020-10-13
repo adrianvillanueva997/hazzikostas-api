@@ -1,0 +1,7 @@
+client/node_modules
+client/build
+.gitignore
+.whitesource
+LICENSE
+README.md
+renovate.json

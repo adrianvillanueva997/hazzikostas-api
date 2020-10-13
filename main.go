@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/go-co-op/gocron"
 	"github.com/joho/godotenv"
@@ -50,8 +51,9 @@ func main() {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	loadCronRoutines()
+	go loadCronRoutines()
 	router := gin.Default()
+	router.Use(static.Serve("/", static.LocalFile("./client/build", true)))
 	router.GET("/api/v1/characters", func(context *gin.Context) {
 		characters, err := v1.GetCharacters()
 		if err != nil {
@@ -69,11 +71,9 @@ func main() {
 	router.GET("/api/v1/updatecharacter", func(context *gin.Context) {
 		context.JSON(200, nil)
 	})
-	router.GET("/", func(context *gin.Context) {
-		context.JSON(200, nil)
-	})
+
 	log.Println("Server running!")
-	err = router.Run("0.0.0.0:3000")
+	err = router.Run("0.0.0.0:5000")
 	if err != nil {
 		log.Println(err)
 	}
