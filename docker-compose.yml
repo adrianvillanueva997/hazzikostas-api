@@ -10,6 +10,7 @@ services:
     networks:
       - proxy
     container_name: hazzikostas_api
+    restart: unless-stopped
     labels:
       - "traefik.enable=true"
       - "traefik.http.middlewares.hazzikostas-api-redirect-websecure.redirectscheme.scheme=https"
