@@ -3,111 +3,13 @@ package routine
 import (
 	"encoding/json"
 	"fmt"
-	v1 "hazzikostas-api/routes/api/v1"
+	"hazzikostas-api/core/characters"
+	"hazzikostas-api/core/raider"
 	"hazzikostas-api/pkg/db"
 	"log"
 	"net/http"
 	"net/url"
 )
-
-type RaiderData struct {
-	Name                     string `json:"name"`
-	Race                     string `json:"race"`
-	Class                    string `json:"class"`
-	ActiveSpecName           string `json:"active_spec_name"`
-	ActiveSpecRole           string `json:"active_spec_role"`
-	Gender                   string `json:"gender"`
-	Faction                  string `json:"faction"`
-	AchievementPoints        int    `json:"achievement_points"`
-	HonorableKills           int    `json:"honorable_kills"`
-	Region                   string `json:"region"`
-	Realm                    string `json:"realm"`
-	MythicPlusScoresBySeason []struct {
-		Season string `json:"season"`
-		Scores struct {
-			All    float32 `json:"all"`
-			Dps    float32 `json:"dps"`
-			Healer float32 `json:"healer"`
-			Tank   float32 `json:"tank"`
-			Spec0  float32 `json:"spec_0"`
-			Spec1  float32 `json:"spec_1"`
-			Spec2  float32 `json:"spec_2"`
-			Spec3  float32 `json:"spec_3"`
-		} `json:"scores"`
-	} `json:"mythic_plus_scores_by_season"`
-	MythicPlusRanks struct {
-		Overall struct {
-			World  float32 `json:"world"`
-			Region float32 `json:"region"`
-			Realm  float32 `json:"realm"`
-		} `json:"overall"`
-		Class struct {
-			World  float32 `json:"world"`
-			Region float32 `json:"region"`
-			Realm  float32 `json:"realm"`
-		} `json:"class"`
-		FactionOverall struct {
-			World  float32 `json:"world"`
-			Region float32 `json:"region"`
-			Realm  float32 `json:"realm"`
-		} `json:"faction_overall"`
-		FactionClass struct {
-			World  float32 `json:"world"`
-			Region float32 `json:"region"`
-			Realm  float32 `json:"realm"`
-		} `json:"faction_class"`
-		Dps struct {
-			World  float32 `json:"world"`
-			Region float32 `json:"region"`
-			Realm  float32 `json:"realm"`
-		} `json:"dps"`
-		ClassDps struct {
-			World  float32 `json:"world"`
-			Region float32 `json:"region"`
-			Realm  float32 `json:"realm"`
-		} `json:"class_dps"`
-		FactionDps struct {
-			World  float32 `json:"world"`
-			Region float32 `json:"region"`
-			Realm  float32 `json:"realm"`
-		} `json:"faction_dps"`
-		FactionClassDps struct {
-			World  float32 `json:"world"`
-			Region float32 `json:"region"`
-			Realm  float32 `json:"realm"`
-		} `json:"faction_class_dps"`
-		Spec62 struct {
-			World  float32 `json:"world"`
-			Region float32 `json:"region"`
-			Realm  float32 `json:"realm"`
-		} `json:"spec_62"`
-		FactionSpec62 struct {
-			World  float32 `json:"world"`
-			Region float32 `json:"region"`
-			Realm  float32 `json:"realm"`
-		} `json:"faction_spec_62"`
-		Spec63 struct {
-			World  float32 `json:"world"`
-			Region float32 `json:"region"`
-			Realm  float32 `json:"realm"`
-		} `json:"spec_63"`
-		FactionSpec63 struct {
-			World  float32 `json:"world"`
-			Region float32 `json:"region"`
-			Realm  float32 `json:"realm"`
-		} `json:"faction_spec_63"`
-		Spec64 struct {
-			World  float32 `json:"world"`
-			Region float32 `json:"region"`
-			Realm  float32 `json:"realm"`
-		} `json:"spec_64"`
-		FactionSpec64 struct {
-			World  float32 `json:"world"`
-			Region float32 `json:"region"`
-			Realm  float32 `json:"realm"`
-		} `json:"faction_spec_64"`
-	} `json:"mythic_plus_ranks"`
-}
 
 type characterInfo struct {
 	region string
@@ -120,14 +22,13 @@ func buildURL(character characterInfo) string {
 		character.region, character.realm, url.QueryEscape(character.name))
 }
 
-func GetRaiderData(region string, realm string, name string) (*RaiderData, error) {
+func GetRaiderData(region string, realm string, name string) (*raider.Data, error) {
 	character := characterInfo{region, realm, name}
-	fmt.Println(url.Parse(buildURL(character)))
 	var resp, err = http.Get(buildURL(character))
 	if err != nil {
 		log.Fatal(err)
 	}
-	data := new(RaiderData)
+	data := new(raider.Data)
 	defer func() {
 		err = resp.Body.Close()
 		if err != nil {
@@ -141,7 +42,7 @@ func GetRaiderData(region string, realm string, name string) (*RaiderData, error
 	return data, nil
 }
 
-func Routine(characters []v1.Character) {
+func Routine(characters []characters.Character) {
 	for i := 0; i < len(characters); i++ {
 		raiderInfo, err := GetRaiderData(characters[i].Region, characters[i].Realm, characters[i].ToonName)
 		log.Println("Analyzing: " + characters[i].ToonName)
@@ -155,7 +56,7 @@ func Routine(characters []v1.Character) {
 			raiderInfo.MythicPlusScoresBySeason[0].Scores.Spec0 != characters[i].Spec0 ||
 			raiderInfo.MythicPlusScoresBySeason[0].Scores.Spec1 != characters[i].Spec1 ||
 			raiderInfo.MythicPlusScoresBySeason[0].Scores.Spec2 != characters[i].Spec2 ||
-			raiderInfo.MythicPlusScoresBySeason[0].Scores.Spec3 != characters[i].Spec3{
+			raiderInfo.MythicPlusScoresBySeason[0].Scores.Spec3 != characters[i].Spec3 {
 			log.Println("Updating: " + characters[i].ToonName)
 			err = updateCharacter(characters[i], raiderInfo)
 			if err != nil {
@@ -165,7 +66,7 @@ func Routine(characters []v1.Character) {
 	}
 }
 
-func updateCharacterValues(character *v1.Character, raiderInfo *RaiderData) {
+func updateCharacterValues(character *characters.Character, raiderInfo *raider.Data) {
 	// differences with old data
 	character.TankDif = raiderInfo.MythicPlusScoresBySeason[0].Scores.Tank - character.Tank
 	character.HealerDif = raiderInfo.MythicPlusScoresBySeason[0].Scores.Healer - character.Healer
@@ -193,7 +94,7 @@ func updateCharacterValues(character *v1.Character, raiderInfo *RaiderData) {
 }
 
 // updateCharacter
-func updateCharacter(character v1.Character, raiderInfo *RaiderData) error {
+func updateCharacter(character characters.Character, raiderInfo *raider.Data) error {
 	cursor, err := db.SetConnection()
 	if err != nil {
 		log.Println(err)
@@ -222,6 +123,5 @@ func updateCharacter(character v1.Character, raiderInfo *RaiderData) error {
 		log.Println(err)
 		return err
 	}
-
 	return nil
 }

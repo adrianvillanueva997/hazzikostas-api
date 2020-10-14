@@ -2,7 +2,7 @@ package routine
 
 import (
 	"github.com/go-co-op/gocron"
-	v1 "hazzikostas-api/routes/api/v1"
+	v1 "hazzikostas-api/controllers/v1"
 	"log"
 	"time"
 )
