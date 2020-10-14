@@ -18,19 +18,19 @@ func ExecuteRoutine() {
 
 func LoadCronRoutines() {
 	cron1 := gocron.NewScheduler(time.UTC)
-	cron1.Every(1).Day().At("18:00")
+	cron1.Every(1).Day().At("16:00")
 	_, err := cron1.Do(ExecuteRoutine)
 	if err != nil {
 		log.Println(err)
 	}
 	cron2 := gocron.NewScheduler(time.UTC)
-	cron2.Every(1).Day().At("00:00")
+	cron2.Every(1).Day().At("22:00")
 	_, err = cron2.Do(ExecuteRoutine)
 	if err != nil {
 		log.Println(err)
 	}
 	cron3 := gocron.NewScheduler(time.UTC)
-	cron3.Every(1).Day().At("06:00")
+	cron3.Every(1).Day().At("04:00")
 	_, err = cron3.Do(ExecuteRoutine)
 	if err != nil {
 		log.Println(err)
