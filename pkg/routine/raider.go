@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	v1 "hazzikostas-api/routes/api/v1"
-	"hazzikostas-api/src/db"
+	"hazzikostas-api/pkg/db"
 	"log"
 	"net/http"
 	"net/url"

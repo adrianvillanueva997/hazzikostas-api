@@ -1,7 +1,7 @@
 package v1
 
 import (
-	"hazzikostas-api/src/db"
+	"hazzikostas-api/pkg/db"
 	"log"
 )
 
