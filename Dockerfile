@@ -13,7 +13,7 @@ COPY . .
 RUN go build -o main .
 
 # Javascript build
-FROM node:14.13.1-alpine3.12 as build-js
+FROM node:14.14.0-alpine3.12 as build-js
 RUN apk --no-cache update && apk add make g++ && rm -rf
 WORKDIR /build_js
 COPY client .
