@@ -31,10 +31,11 @@ func AuthenticateUser(username string, password string) (*bool, error) {
 	data := message{}
 	err = json.NewDecoder(resp.Body).Decode(&data)
 	log.Println(data.Message)
+	status := false
 	if data.Message == "Ok" {
-		status := true
+		status = true
 		return &status, nil
 	}
-	status := false
+
 	return &status, nil
 }
