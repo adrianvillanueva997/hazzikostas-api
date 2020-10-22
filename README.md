@@ -8,6 +8,7 @@ Technologies used:
    * Gingonic
    * Godotenv
    * Gocron
+   * Mysql connector
  * Javascript
    * React
 
