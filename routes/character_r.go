@@ -30,7 +30,7 @@ func GetCharacterRoutes(router *gin.Engine) {
 	router.POST("/api/v1/updatecharacter", func(context *gin.Context) {
 		username := context.Query("username")
 		password := context.Query("password")
-		character := context.Query("character_r")
+		character := context.Query("character")
 		status, err := auth.AuthenticateUser(username, password)
 		if err != nil {
 			log.Println(err)

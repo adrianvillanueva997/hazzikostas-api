@@ -17,13 +17,11 @@ func UpdatePostCharacterStatus(characterName string) error {
 			log.Println(err)
 		}
 	}()
-	results, err := cursor.Query("UPDATE HK_Toons_1 set Post=0 WHERE Toon_Name = ?", characterName)
+	_, err = cursor.Exec("UPDATE HK_Toons_1 set Post=0 WHERE Toon_Name=?", characterName)
 	if err != nil {
 		log.Println(err)
 		return err
 	}
-	if results.Next() {
-		log.Println(results)
-	}
+
 	return nil
 }

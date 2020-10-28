@@ -117,7 +117,8 @@ func updateCharacter(character characters.Character, raiderInfo *raider.Data) er
 		"healer_diff=?, tank_diff=?, spec_0_diff=?, "+
 		"spec_1_diff=?, spec_2_diff=?, spec_3_diff=?, "+
 		"rank_overall_diff=?, rank_class_diff=?, rank_faction_diff=? "+
-		"WHERE Toon_Name=? ;", character.SpecName, character.Class, character.Race, character.All, character.Dps, character.Healer, character.Tank, character.Spec0,
+		"WHERE Toon_Name=? ;", character.SpecName, character.Class, character.Race, character.All, character.Dps,
+		character.Healer, character.Tank, character.Spec0,
 		character.Spec1, character.Spec2, character.Spec3, character.RankOverall, character.RankClass,
 		character.RankFaction, character.AllDif, character.DpsDif, character.HealerDif, character.TankDif,
 		character.Spec0Dif, character.Spec1Dif, character.Spec2Dif, character.Spec3Dif, character.RankOverallDif,
