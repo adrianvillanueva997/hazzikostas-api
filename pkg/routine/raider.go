@@ -91,6 +91,9 @@ func updateCharacterValues(character *characters.Character, raiderInfo *raider.D
 	character.RankFaction = raiderInfo.MythicPlusRanks.FactionOverall.Realm - character.RankFaction
 	character.RankClass = raiderInfo.MythicPlusRanks.Class.Realm - character.RankClass
 	character.RankOverall = raiderInfo.MythicPlusRanks.Overall.Realm - character.RankOverall
+	character.SpecName = raiderInfo.ActiveSpecName
+	character.Race = raiderInfo.Race
+	character.Class = raiderInfo.Class
 }
 
 // updateCharacter
@@ -107,14 +110,14 @@ func updateCharacter(character characters.Character, raiderInfo *raider.Data) er
 	}()
 	updateCharacterValues(&character, raiderInfo)
 	rows, err := cursor.Query("UPDATE Discord_Bots.HK_Toons_1 "+
-		"SET Post=1, `_all`=?, dps=?, healer=?, "+
+		"SET Post=1, activeSpec=?, class=?, race=?, `_all`=?, dps=?, healer=?, "+
 		"tank=?, spec_0=?, spec_1=?, spec_2=?, "+
 		"spec_3=?, rank_overall=?, rank_class=?, "+
 		"rank_faction=?, `_all_diff`=?, dps_diff=?, "+
 		"healer_diff=?, tank_diff=?, spec_0_diff=?, "+
 		"spec_1_diff=?, spec_2_diff=?, spec_3_diff=?, "+
 		"rank_overall_diff=?, rank_class_diff=?, rank_faction_diff=? "+
-		"WHERE Toon_Name=? ;", character.All, character.Dps, character.Healer, character.Tank, character.Spec0,
+		"WHERE Toon_Name=? ;", character.SpecName, character.Class, character.Race, character.All, character.Dps, character.Healer, character.Tank, character.Spec0,
 		character.Spec1, character.Spec2, character.Spec3, character.RankOverall, character.RankClass,
 		character.RankFaction, character.AllDif, character.DpsDif, character.HealerDif, character.TankDif,
 		character.Spec0Dif, character.Spec1Dif, character.Spec2Dif, character.Spec3Dif, character.RankOverallDif,

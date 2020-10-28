@@ -24,6 +24,9 @@ class App extends Component {
                     <th>Toon</th>
                     <th>Region</th>
                     <th>Realm</th>
+                    <th>Race</th>
+                    <th>Class</th>
+                    <th>Active Spec</th>
                     <th>All</th>
                     <th>DPS</th>
                     <th>Healer</th>
@@ -39,7 +42,7 @@ class App extends Component {
                     {
                         this.state.characters.map((character, index) => {
                             const {
-                                toon_name, region, realm, all, dps,
+                                toon_name, region, realm, race, class_, spec_name, all, dps,
                                 healer, tank, spec_0, spec_1, spec_2, spec_3,
                                 rank_overall, rank_class, rank_faction
                             } = character
@@ -47,6 +50,9 @@ class App extends Component {
                                 <td>{toon_name}</td>
                                 <td>{region}</td>
                                 <td>{realm}</td>
+                                <td>{race}</td>
+                                <td>{class_}</td>
+                                <td>{spec_name}</td>
                                 <td>{all}</td>
                                 <td>{dps}</td>
                                 <td>{healer}</td>

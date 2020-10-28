@@ -2,6 +2,9 @@ package characters
 
 type Character struct {
 	ToonName       string  `json:"toon_name"`
+	SpecName       string  `json:"spec_name"`
+	Class          string  `json:"class_"`
+	Race           string  `json:"race"`
 	Region         string  `json:"region"`
 	Realm          string  `json:"realm"`
 	All            float32 `json:"all"`
