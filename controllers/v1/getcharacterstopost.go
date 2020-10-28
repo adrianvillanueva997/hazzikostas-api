@@ -18,8 +18,8 @@ func GetCharactersToPost() (*[]characters.Character, error) {
 			log.Println(err)
 		}
 	}()
-	results, err := cursor.Query("SELECT db.Toon_Name, db.region, db.realm, db._all, db.dps," +
-		"db.healer, db.tank, db.spec_0, db.spec_1, db.spec_2, db.spec_3, db.rank_overall," +
+	results, err := cursor.Query("SELECT db.Toon_Name, db.region, db.realm,db.activeSpec, db.class, db.race, db._all," +
+		"db.dps, db.healer, db.tank, db.spec_0, db.spec_1, db.spec_2, db.spec_3, db.rank_overall," +
 		"db.rank_class, db.rank_faction, db._all_diff, db.dps_diff, db.healer_diff," +
 		"db.tank_diff, db.spec_0_diff, db.spec_1_diff, db.spec_2_diff, db.spec_3_diff," +
 		"db.rank_class_diff, db.rank_faction_diff FROM HK_Toons_1 db WHERE Post = 1")
@@ -29,10 +29,11 @@ func GetCharactersToPost() (*[]characters.Character, error) {
 	var characterList []characters.Character
 	for results.Next() {
 		var tmp characters.Character
-		err := results.Scan(&tmp.ToonName, &tmp.Region, &tmp.Realm, &tmp.All, &tmp.Dps, &tmp.Healer,
-			&tmp.Tank, &tmp.Spec0, &tmp.Spec1, &tmp.Spec2, &tmp.Spec3, &tmp.RankOverall, &tmp.RankClass,
-			&tmp.RankFaction, &tmp.AllDif, &tmp.DpsDif, &tmp.HealerDif, &tmp.TankDif, &tmp.Spec0Dif, &tmp.Spec1Dif,
-			&tmp.Spec2Dif, &tmp.Spec3Dif, &tmp.RankClassDif, &tmp.RankFactionDif)
+		err := results.Scan(&tmp.ToonName, &tmp.Region, &tmp.Realm, &tmp.SpecName, &tmp.Class, &tmp.Race,
+			&tmp.All, &tmp.Dps, &tmp.Healer, &tmp.Tank, &tmp.Spec0, &tmp.Spec1, &tmp.Spec2, &tmp.Spec3,
+			&tmp.RankOverall, &tmp.RankClass, &tmp.RankFaction, &tmp.AllDif, &tmp.DpsDif, &tmp.HealerDif,
+			&tmp.TankDif, &tmp.Spec0Dif, &tmp.Spec1Dif, &tmp.Spec2Dif, &tmp.Spec3Dif, &tmp.RankClassDif,
+			&tmp.RankFactionDif)
 		if err != nil {
 			return nil, err
 		}

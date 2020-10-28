@@ -37,7 +37,10 @@ func LoadCronRoutines() {
 	}
 	cron4 := gocron.NewScheduler(time.UTC)
 	cron4.Every(1).Day().At("23:55")
-	_, err = cron4.Do(ExecuteRoutine)
+	_, err4 := cron4.Do(ExecuteRoutine)
+	if err4 != nil {
+		log.Println(err)
+	}
 	cron1.StartAsync()
 	cron2.StartAsync()
 	cron3.StartAsync()
