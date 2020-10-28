@@ -23,7 +23,7 @@ func GetCharacterRoutes(router *gin.Engine) {
 		}
 		context.JSON(200, characters)
 	})
-	router.GET("/api/v1/updatecharacter", func(context *gin.Context) {
+	router.POST("/api/v1/updatecharacter", func(context *gin.Context) {
 		username := context.Query("username")
 		password := context.Query("password")
 		character := context.Query("character_r")
@@ -47,7 +47,7 @@ func GetCharacterRoutes(router *gin.Engine) {
 			context.JSON(401, "Params missing")
 		}
 	})
-	router.GET("/api/v1/createcharacter", func(context *gin.Context) {
+	router.POST("/api/v1/createcharacter", func(context *gin.Context) {
 		username := context.Query("username")
 		password := context.Query("password")
 		characterName := context.Query("character")
@@ -77,7 +77,7 @@ func GetCharacterRoutes(router *gin.Engine) {
 			context.JSON(401, "Params missing")
 		}
 	})
-	router.GET("/api/v1/deletecharacter", func(context *gin.Context) {
+	router.DELETE("/api/v1/deletecharacter", func(context *gin.Context) {
 		username := context.Query("username")
 		password := context.Query("password")
 		characterName := context.Query("character")
