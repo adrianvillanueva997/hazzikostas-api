@@ -8,7 +8,9 @@ import (
 )
 
 //nolint:gocognit nolint:funlen
+// Function to publish the API routes
 func GetCharacterRoutes(router *gin.Engine) {
+	// Get all characters
 	router.GET("/api/v1/characters", func(context *gin.Context) {
 		characters, err := v1.GetCharacters()
 		if err != nil {
@@ -16,6 +18,7 @@ func GetCharacterRoutes(router *gin.Engine) {
 		}
 		context.JSON(200, characters)
 	})
+	// Get all characters ready to post in the bot
 	router.GET("/api/v1/postcharacters", func(context *gin.Context) {
 		characters, err := v1.GetCharactersToPost()
 		if err != nil {
@@ -23,6 +26,7 @@ func GetCharacterRoutes(router *gin.Engine) {
 		}
 		context.JSON(200, characters)
 	})
+	// Update character, used when a character was already posted to put it on 0
 	router.POST("/api/v1/updatecharacter", func(context *gin.Context) {
 		username := context.Query("username")
 		password := context.Query("password")
@@ -47,6 +51,7 @@ func GetCharacterRoutes(router *gin.Engine) {
 			context.JSON(401, "Params missing")
 		}
 	})
+	// Used to create a new character to track
 	router.POST("/api/v1/createcharacter", func(context *gin.Context) {
 		username := context.Query("username")
 		password := context.Query("password")
@@ -77,6 +82,7 @@ func GetCharacterRoutes(router *gin.Engine) {
 			context.JSON(401, "Params missing")
 		}
 	})
+	// Used to delete a character
 	router.DELETE("/api/v1/deletecharacter", func(context *gin.Context) {
 		username := context.Query("username")
 		password := context.Query("password")
