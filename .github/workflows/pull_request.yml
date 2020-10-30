@@ -3,10 +3,11 @@
 #
 # You may wish to alter this file to override the set of languages analyzed,
 # or to provide custom queries or build logic.
-name: "Deployment"
+name: "Pull Request check"
 
 on:
-  push:
+  pull_request:
+    # The branches below must be a subset of the branches above
     branches: [ master ]
 
 jobs:
@@ -54,19 +55,3 @@ jobs:
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
-
-      - name: Remote deployment
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST }}
-          port: ${{ secrets.PORT }}
-          key: ${{ secrets.KEY }}
-          username: ${{ secrets.USERNAME }}
-          script: |
-            cd hazzikostas-api
-            docker-compose down
-            docker image rm hazzikostas_api
-            git pull origin master
-            docker build -t hazzikostas_api .
-            docker rmi $(docker images -f "dangling=true" -q)
-            docker-compose up -d
