@@ -49,18 +49,20 @@ func Routine(characters []characters.Character) {
 		if err != nil {
 			log.Println(err)
 		}
-		if raiderInfo.MythicPlusScoresBySeason[0].Scores.All != characters[i].All ||
-			raiderInfo.MythicPlusScoresBySeason[0].Scores.Dps != characters[i].Dps ||
-			raiderInfo.MythicPlusScoresBySeason[0].Scores.Tank != characters[i].Tank ||
-			raiderInfo.MythicPlusScoresBySeason[0].Scores.Healer != characters[i].Healer ||
-			raiderInfo.MythicPlusScoresBySeason[0].Scores.Spec0 != characters[i].Spec0 ||
-			raiderInfo.MythicPlusScoresBySeason[0].Scores.Spec1 != characters[i].Spec1 ||
-			raiderInfo.MythicPlusScoresBySeason[0].Scores.Spec2 != characters[i].Spec2 ||
-			raiderInfo.MythicPlusScoresBySeason[0].Scores.Spec3 != characters[i].Spec3 {
-			log.Println("Updating: " + characters[i].ToonName)
-			err = updateCharacter(characters[i], raiderInfo)
-			if err != nil {
-				log.Println(err)
+		if len(raiderInfo.MythicPlusScoresBySeason) != 0 {
+			if raiderInfo.MythicPlusScoresBySeason[0].Scores.All != characters[i].All ||
+				raiderInfo.MythicPlusScoresBySeason[0].Scores.Dps != characters[i].Dps ||
+				raiderInfo.MythicPlusScoresBySeason[0].Scores.Tank != characters[i].Tank ||
+				raiderInfo.MythicPlusScoresBySeason[0].Scores.Healer != characters[i].Healer ||
+				raiderInfo.MythicPlusScoresBySeason[0].Scores.Spec0 != characters[i].Spec0 ||
+				raiderInfo.MythicPlusScoresBySeason[0].Scores.Spec1 != characters[i].Spec1 ||
+				raiderInfo.MythicPlusScoresBySeason[0].Scores.Spec2 != characters[i].Spec2 ||
+				raiderInfo.MythicPlusScoresBySeason[0].Scores.Spec3 != characters[i].Spec3 {
+				log.Println("Updating: " + characters[i].ToonName)
+				err = updateCharacter(characters[i], raiderInfo)
+				if err != nil {
+					log.Println(err)
+				}
 			}
 		}
 	}
