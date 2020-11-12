@@ -90,9 +90,9 @@ func updateCharacterValues(character *characters.Character, raiderInfo *raider.D
 	character.Spec1 = raiderInfo.MythicPlusScoresBySeason[0].Scores.Spec1
 	character.Spec2 = raiderInfo.MythicPlusScoresBySeason[0].Scores.Spec2
 	character.Spec3 = raiderInfo.MythicPlusScoresBySeason[0].Scores.Spec3
-	character.RankFaction = raiderInfo.MythicPlusRanks.FactionOverall.Realm - character.RankFaction
-	character.RankClass = raiderInfo.MythicPlusRanks.Class.Realm - character.RankClass
-	character.RankOverall = raiderInfo.MythicPlusRanks.Overall.Realm - character.RankOverall
+	character.RankFaction = raiderInfo.MythicPlusRanks.FactionOverall.Realm
+	character.RankClass = raiderInfo.MythicPlusRanks.Class.Realm
+	character.RankOverall = raiderInfo.MythicPlusRanks.Overall.Realm
 	character.SpecName = raiderInfo.ActiveSpecName
 	character.Race = raiderInfo.Race
 	character.Class = raiderInfo.Class
