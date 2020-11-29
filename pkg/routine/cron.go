@@ -14,6 +14,7 @@ func ExecuteRoutine() {
 		log.Println(err)
 	}
 	Routine(*characters)
+	log.Println("Routine finished!")
 }
 
 func LoadCronRoutines() {

@@ -16,7 +16,7 @@ func main() {
 		log.Fatalln(err)
 	}
 	go routine.LoadCronRoutines()
-	go routine.ExecuteRoutine()
+	// go routine.ExecuteRoutine()
 	router := gin.Default()
 	router.Use(static.Serve("/", static.LocalFile("./client/build", true)))
 	routes.GetCharacterRoutes(router)

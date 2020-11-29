@@ -58,22 +58,21 @@ func GetCharacterRoutes(router *gin.Engine) {
 		characterName := context.Query("character")
 		region := context.Query("region")
 		realm := context.Query("realm")
-		if !(username == "" && password == "" && characterName == "" && region == "" && realm == "") { //nolint:nestif
+		serverID := context.Query("server_id")
+		if !(username == "" && password == "" && characterName == "" && region == "" && realm == "" && serverID == "") { //nolint:nestif
 			status, err := auth.AuthenticateUser(username, password)
 			if err != nil {
 				log.Println(err)
 				context.JSON(400, nil)
 			}
 			if *status {
-				characterStatus, err := v1.CreateCharacter(characterName, region, realm)
+				characterStatus, err := v1.CreateCharacter(characterName, region, realm, serverID)
 				if err != nil {
 					log.Println(err)
 					context.JSON(500, nil)
 				}
-				if !*characterStatus && characterStatus != nil {
-					context.JSON(201, "Ok")
-				} else {
-					context.JSON(204, "Character already exists")
+				if characterStatus != nil {
+					context.JSON(200, "Ok")
 				}
 			} else {
 				context.JSON(401, "User authentication failed")
@@ -98,7 +97,6 @@ func GetCharacterRoutes(router *gin.Engine) {
 				if err != nil {
 					log.Println(err)
 					context.JSON(500, nil)
-
 				}
 				if *deleteStatus {
 					context.JSON(200, "Ok")
@@ -111,5 +109,28 @@ func GetCharacterRoutes(router *gin.Engine) {
 		} else {
 			context.JSON(401, "Params missing")
 		}
+	})
+	router.POST("/api/v1/checkserver", func(context *gin.Context) {
+		username := context.Query("username")
+		password := context.Query("password")
+		id := context.Query("id")
+		if !(username == "" && password == "" && id != "") {
+			status, err := auth.AuthenticateUser(username, password)
+			if err != nil {
+				log.Println(err)
+				context.JSON(401, nil)
+			}
+			if *status {
+				err := v1.CheckServer(id)
+				if err != nil {
+					log.Println(err)
+					context.JSON(500, nil)
+				}
+			}
+			context.JSON(200, "OK")
+		} else {
+			context.JSON(401, nil)
+		}
+
 	})
 }

@@ -4,7 +4,7 @@ import (
 	"hazzikostas-api/pkg/db"
 	"log"
 )
-
+// Updates a character in the DB if it was already posted by the discord bot.
 func UpdatePostCharacterStatus(characterName string) error {
 	cursor, err := db.SetConnection()
 	if err != nil {
